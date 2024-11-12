@@ -1,0 +1,74 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn {
+  margin: 5px;
+}
+
+/* Add margin to input fields */
+.form-control {
+  margin-bottom: 10px; /* Add space between input fields */
+}
+
+/* Specific styling for search card forms */
+.search-card .form-inline .form-control {
+  margin-right: 5px; /* Small margin between fields */
+}
+
+.search-card .form-inline .form-control,
+.search-card .form-inline .btn {
+  height: 38px; /* Consistent height for search input and button */
+  vertical-align: middle;
+}
+
+.search-card .form-control::placeholder {
+  color: #6c757d; /* Placeholder color */
+  opacity: 1;
+}
+
+.form-control.expiry-field {
+  width: 100px; /* Fixed width for expiry fields */
+}
+
+.table th,
+.table td {
+  vertical-align: middle; /* Center align text vertically */
+}
+
+/* Hover effects for buttons */
+.btn:hover {
+  opacity: 0.8; /* Slightly fade buttons on hover */
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-footer .btn-primary {
+  background-color: #007bff; /* Consistent button color */
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px; /* Space between cards */
+  }
+
+  .modal-dialog {
+    width: 90%; /* Make modal width responsive */
+    max-width: none; /* Remove max width */
+  }
+
+  .search-card .form-inline .form-control,
+  .search-card .form-inline .btn {
+    width: 100%; /* Make search fields full width on smaller screens */
+    margin-bottom: 10px; /* Add spacing on small screens */
+  }
+}

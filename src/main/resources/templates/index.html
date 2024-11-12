@@ -1,0 +1,812 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;  <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;  <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+<!--&lt;!&ndash;  <title>User Management</title>&ndash;&gt;-->
+<!--&lt;!&ndash;  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;  <link rel="stylesheet" th:href="@{/styles.css}">&ndash;&gt;-->
+<!--&lt;!&ndash;  <script th:src="@{/scripts.js}"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="container-fluid mt-5">&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="row">&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Left Column: Create User Form &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="card mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card-header">Create New User</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;          <form id="create-user-form">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="clientname">Client Name</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="text" class="form-control" id="clientname" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="clientnumber">Client Number</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="text" class="form-control" id="clientnumber" pattern="^[6-9]\d{9}$" title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="passportexpirymonth">Passport Expiry Month</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="number" class="form-control" id="passportexpirymonth" min="1" max="12" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="passportexpiryyear">Passport Expiry Year</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="number" class="form-control" id="passportexpiryyear" min="1990" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="passportissuemonth">Passport Issue Month</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="number" class="form-control" id="passportissuemonth" min="1" max="12" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="passportissueyear">Passport Issue Year</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="number" class="form-control" id="passportissueyear" min="1990" required>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button type="submit" class="btn btn-primary">Add User</button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </form>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Right Column: Users Table and Search Forms Above it &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="col-md-9">&ndash;&gt;-->
+
+<!--&lt;!&ndash;      &lt;!&ndash; Row for Search Forms above Users Table &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="row mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash; Find by Name &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="card search-card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;              <h5 class="card-title">Search by Name</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;              <form id="findByNameForm" class="form-inline">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <input type="text" id="personName" class="form-control mr-2" placeholder="Name" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                <button type="submit" class="btn btn-primary">Search</button>&ndash;&gt;-->
+<!--&lt;!&ndash;              </form>&ndash;&gt;-->
+<!--&lt;!&ndash;              <div id="personByNameDetails" class="mt-3"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        &lt;!&ndash; Find by Expiry &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="card search-card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;              <h5 class="card-title">Search by Expiry</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;              <form id="findByExpiryForm" class="form-inline">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <input type="number" id="expiryMonth" class="form-control expiry-field mr-2" placeholder="Month" min="1" max="12" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <input type="number" id="expiryYear" class="form-control expiry-field mr-2" placeholder="Year" min="2024" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                <button type="submit" class="btn btn-primary">Search</button>&ndash;&gt;-->
+<!--&lt;!&ndash;              </form>&ndash;&gt;-->
+<!--&lt;!&ndash;              <div id="personByExpiryDetails" class="mt-3"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;      &lt;!&ndash; Users Table &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="card">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;          <table class="table table-striped" id="users-table">&ndash;&gt;-->
+<!--&lt;!&ndash;            <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>User ID</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Name</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Number</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Expiry Month</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Expiry Year</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Issue Month</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Issue Year</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Actions</th>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;            </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;            <tbody></tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;          </table>&ndash;&gt;-->
+<!--&lt;!&ndash;          <div id="pagination" class="mt-3">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="btn btn-outline-primary" id="prev-page">Previous</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="btn btn-outline-primary" id="next-page">Next</button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;      &lt;!&ndash; Edit User Modal &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      &lt;!&ndash; ... (Edit User Modal code here) ... &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script th:src="@{/scripts.js}"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="//code.jquery.com/jquery-3.5.1.slim.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="//cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>User Management</title>-->
+<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--  <h1>User Management</h1>-->
+<!--  &lt;!&ndash; Create New User Form &ndash;&gt;-->
+<!--  <form id="create-user-form">-->
+<!--    <div class="form-group">-->
+<!--      <label for="clientname">Name</label>-->
+<!--      <input type="text" class="form-control" id="clientname" required>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="clientnumber">Mobile Number</label>-->
+<!--      <input type="text" class="form-control" id="clientnumber" required>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="passportexpirymonth">Passport Expiry Month</label>-->
+<!--      <input type="number" class="form-control" id="passportexpirymonth" required>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="passportexpiryyear">Passport Expiry Year</label>-->
+<!--      <input type="number" class="form-control" id="passportexpiryyear" required>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="passportissuemonth">Passport Issue Month</label>-->
+<!--      <input type="number" class="form-control" id="passportissuemonth" required>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="passportissueyear">Passport Issue Year</label>-->
+<!--      <input type="number" class="form-control" id="passportissueyear" required>-->
+<!--    </div>-->
+<!--    <button type="submit" class="btn btn-primary">Create User</button>-->
+<!--  </form>-->
+
+<!--  &lt;!&ndash; Users Table &ndash;&gt;-->
+<!--  <h2 class="mt-4">Users</h2>-->
+<!--  <table class="table table-striped" id="users-table">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th>ID</th>-->
+<!--      <th>Name</th>-->
+<!--      <th>Mobile Number</th>-->
+<!--      <th>Passport Expiry Month</th>-->
+<!--      <th>Passport Expiry Year</th>-->
+<!--      <th>Passport Issue Month</th>-->
+<!--      <th>Passport Issue Year</th>-->
+<!--      <th>Actions</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    &lt;!&ndash; User rows will be dynamically inserted here &ndash;&gt;-->
+<!--    </tbody>-->
+<!--  </table>-->
+
+<!--  <nav aria-label="Page navigation example">-->
+<!--    <ul class="pagination" id="pagination">-->
+<!--      <li class="page-item">-->
+<!--        <a class="page-link" href="#" id="prev-page">Previous</a>-->
+<!--      </li>-->
+<!--      <li class="page-item">-->
+<!--        <a class="page-link" href="#" id="next-page">Next</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </nav>-->
+<!--</div>-->
+
+<!--<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<!--<script src="scripts.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>User Management</title>-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container mt-5">-->
+<!--  <h2>User Management</h2>-->
+<!--  <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal">Add User</button>-->
+<!--  <div id="users-table-wrapper">-->
+<!--    <table class="table table-bordered" id="users-table">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>ID</th>-->
+<!--        <th>Name</th>-->
+<!--        <th>Mobile Number</th>-->
+<!--        <th>Passport Expiry Month</th>-->
+<!--        <th>Passport Expiry Year</th>-->
+<!--        <th>Passport Issue Month</th>-->
+<!--        <th>Passport Issue Year</th>-->
+<!--        <th>Actions</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody></tbody>-->
+<!--    </table>-->
+<!--    <div>-->
+<!--      <button id="prevPageBtn" class="btn btn-secondary" onclick="changePage('prev')">Previous</button>-->
+<!--      <button id="nextPageBtn" class="btn btn-secondary" onclick="changePage('next')">Next</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Modal for Editing User &ndash;&gt;-->
+<!--<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">-->
+<!--  <div class="modal-dialog">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <form id="edit-user-form">-->
+<!--          <div class="mb-3">-->
+<!--            <label for="edit-name" class="form-label">Name</label>-->
+<!--            <input type="text" class="form-control" id="edit-name" required>-->
+<!--          </div>-->
+<!--          <div class="mb-3">-->
+<!--            <label for="edit-mobile" class="form-label">Mobile Number</label>-->
+<!--            <input type="text" class="form-control" id="edit-mobile" required>-->
+<!--          </div>-->
+<!--          <div class="mb-3">-->
+<!--            <label for="edit-psp-exp-month" class="form-label">Passport Expiry Month</label>-->
+<!--            <input type="number" class="form-control" id="edit-psp-exp-month" required>-->
+<!--          </div>-->
+<!--          <div class="mb-3">-->
+<!--            <label for="edit-psp-exp-year" class="form-label">Passport Expiry Year</label>-->
+<!--            <input type="number" class="form-control" id="edit-psp-exp-year" required>-->
+<!--          </div>-->
+<!--          <div class="mb-3">-->
+<!--            <label for="edit-psp-issue-month" class="form-label">Passport Issue Month</label>-->
+<!--            <input type="number" class="form-control" id="edit-psp-issue-month" required>-->
+<!--          </div>-->
+<!--          <div class="mb-3">-->
+<!--            <label for="edit-psp-issue-year" class="form-label">Passport Issue Year</label>-->
+<!--            <input type="number" class="form-control" id="edit-psp-issue-year" required>-->
+<!--          </div>-->
+<!--          <input type="hidden" id="edit-user-id">-->
+<!--          <button type="submit" class="btn btn-primary">Save Changes</button>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script src="scripts.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+<!--old code -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>User Management</title>-->
+<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--  <link rel="stylesheet" th:href="@{/styles.css}">-->
+<!--  <script th:src="@{/scripts.js}"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container-fluid mt-5">-->
+<!--  <div class="row">-->
+
+<!--    &lt;!&ndash; Left Column: Create User Form &ndash;&gt;-->
+<!--    <div class="col-md-3">-->
+<!--      <div class="card mb-3">-->
+<!--        <div class="card-header">Create New User</div>-->
+<!--        <div class="card-body">-->
+<!--          <form id="create-user-form">-->
+<!--            <div class="form-group">-->
+<!--              <label for="clientname">Client Name</label>-->
+<!--              <input type="text" class="form-control" id="clientname" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="clientnumber">Client Number</label>-->
+<!--              <input type="text" class="form-control" id="clientnumber" pattern="^[6-9]\d{9}$" title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportexpirymonth">Passport Expiry Month</label>-->
+<!--              <input type="number" class="form-control" id="passportexpirymonth" min="1" max="12" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportexpiryyear">Passport Expiry Year</label>-->
+<!--              <input type="number" class="form-control" id="passportexpiryyear" min="1990" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportissuemonth">Passport Issue Month</label>-->
+<!--              <input type="number" class="form-control" id="passportissuemonth" min="1" max="12" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportissueyear">Passport Issue Year</label>-->
+<!--              <input type="number" class="form-control" id="passportissueyear" min="1990" required>-->
+<!--            </div>-->
+<!--            <button type="submit" class="btn btn-primary">Add User</button>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Right Column: Users Table and Search Forms Above it &ndash;&gt;-->
+<!--    <div class="col-md-9">-->
+<!--      <div class="row mb-3">-->
+<!--        &lt;!&ndash; Search by Name &ndash;&gt;-->
+<!--        <div class="col-md-6">-->
+<!--          <div class="card search-card">-->
+<!--            <div class="card-body">-->
+<!--              <h5 class="card-title">Search by Name</h5>-->
+<!--              <form id="findByNameForm" class="form-inline">-->
+<!--                <div class="form-group">-->
+<!--                  <input type="text" id="personName" class="form-control mr-2" placeholder="Name" required>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary">Search</button>-->
+<!--              </form>-->
+<!--              <div id="personByNameDetails" class="mt-3"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Search by Expiry &ndash;&gt;-->
+<!--        <div class="col-md-6">-->
+<!--          <div class="card search-card">-->
+<!--            <div class="card-body">-->
+<!--              <h5 class="card-title">Search by Expiry</h5>-->
+<!--              <form id="findByExpiryForm" class="form-inline">-->
+<!--                <div class="form-group">-->
+<!--                  <input type="number" id="expiryMonth" class="form-control expiry-field mr-2" placeholder="Month" min="1" max="12" required>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                  <input type="number" id="expiryYear" class="form-control expiry-field mr-2" placeholder="Year" min="2024" required>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary">Search</button>-->
+<!--              </form>-->
+<!--              <div id="personByExpiryDetails" class="mt-3"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Users Table &ndash;&gt;-->
+<!--      <div class="card">-->
+<!--        <div class="card-body">-->
+<!--          <table class="table table-striped" id="users-table">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th>User ID</th>-->
+<!--              <th>Name</th>-->
+<!--              <th>Number</th>-->
+<!--              <th>Expiry Month</th>-->
+<!--              <th>Expiry Year</th>-->
+<!--              <th>Issue Month</th>-->
+<!--              <th>Issue Year</th>-->
+<!--              <th>Actions</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody></tbody>-->
+<!--          </table>-->
+<!--          <div id="pagination" class="mt-3">-->
+<!--            <button class="btn btn-outline-primary" id="prev-page">Previous</button>-->
+<!--            <button class="btn btn-outline-primary" id="next-page">Next</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Edit User Modal &ndash;&gt;-->
+<!--      &lt;!&ndash; ... (Edit User Modal code here) ... &ndash;&gt;-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<script th:src="@{/scripts.js}"></script>-->
+<!--<script src="//code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
+<!--<script src="//cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>-->
+<!--<script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+<!--perplexity code---------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>User Management</title>-->
+<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--  <link rel="stylesheet" th:href="@{/styles.css}">-->
+<!--  <script th:src="@{/scripts.js}"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container-fluid mt-5">-->
+<!--  <div class="row">-->
+
+<!--    &lt;!&ndash; Left Column: Create User Form &ndash;&gt;-->
+<!--    <div class="col-md-3">-->
+<!--      <div class="card mb-3">-->
+<!--        <div class="card-header">Create New User</div>-->
+<!--        <div class="card-body">-->
+<!--          <form id="create-user-form">-->
+<!--            <div class="form-group">-->
+<!--              <label for="clientname">Client Name</label>-->
+<!--              <input type="text" class="form-control" id="clientname" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="clientnumber">Client Number</label>-->
+<!--              <input type="text" class="form-control" id="clientnumber" pattern="^[6-9]\d{9}$" title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportexpirymonth">Passport Expiry Month</label>-->
+<!--              <input type="number" class="form-control" id="passportexpirymonth" min="1" max="12" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportexpiryyear">Passport Expiry Year</label>-->
+<!--              <input type="number" class="form-control" id="passportexpiryyear" min="1990" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportissuemonth">Passport Issue Month</label>-->
+<!--              <input type="number" class="form-control" id="passportissuemonth" min="1" max="12" required>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="passportissueyear">Passport Issue Year</label>-->
+<!--              <input type="number" class="form-control" id="passportissueyear" min="1990" required>-->
+<!--            </div>-->
+<!--            <button type="submit" class="btn btn-primary">Add User</button>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Right Column: Users Table and Search Forms Above it &ndash;&gt;-->
+<!--    <div class="col-md-9">-->
+<!--      <div class="row mb-3">-->
+<!--        &lt;!&ndash; Search by Name &ndash;&gt;-->
+<!--        <div class="col-md-6">-->
+<!--          <div class="card search-card">-->
+<!--            <div class="card-body">-->
+<!--              <h5 class="card-title">Search by Name</h5>-->
+<!--              <form id="findByNameForm" class="form-inline">-->
+<!--                <div class="form-group">-->
+<!--                  <input type="text" id="personName" class="form-control mr-2" placeholder="Name" required>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary">Search</button>-->
+<!--              </form>-->
+<!--              <div id="personByNameDetails" class="mt-3"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Search by Expiry &ndash;&gt;-->
+<!--        <div class="col-md-6">-->
+<!--          <div class="card search-card">-->
+<!--            <div class="card-body">-->
+<!--              <h5 class="card-title">Search by Expiry</h5>-->
+<!--              <form id="findByExpiryForm" class="form-inline">-->
+<!--                <div class="form-group">-->
+<!--                  <input type="number" id="expiryMonth" class="form-control expiry-field mr-2" placeholder="Month" min=1 max=12 required>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                  <input type='number' id='expiryYear' class='form-control expiry-field mr-2' placeholder='Year' min='2024' required />-->
+<!--                </div>-->
+<!--                <button type='submit' class='btn btn-primary'>Search</button>-->
+<!--              </form>-->
+<!--              <div id='personByExpiryDetails' class='mt-3'></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Users Table &ndash;&gt;-->
+<!--      <div class='card'>-->
+<!--        <div class='card-body'>-->
+<!--          <table class='table table-striped' id='users-table'>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th>User ID</th>-->
+<!--              <th>Name</th>-->
+<!--              <th>Number</th>-->
+<!--              <th>Expiry Month</th>-->
+<!--              <th>Expiry Year</th>-->
+<!--              <th>Issue Month</th>-->
+<!--              <th>Issue Year</th>-->
+<!--              <th>Actions</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody></tbody>-->
+<!--          </table>-->
+<!--          &lt;!&ndash; Pagination Buttons &ndash;&gt;-->
+<!--          <div id='pagination' class='mt-3'>-->
+<!--            &lt;!&ndash; Adjusted to add event listeners in JS &ndash;&gt;-->
+<!--            <button type='button' class='btn btn-outline-primary' id='prev-page'>Previous</button>-->
+<!--            <button type='button' class='btn btn-outline-primary' id='next-page'>Next</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Edit User Modal &ndash;&gt;-->
+<!--      &lt;!&ndash; Modal structure for editing user details &ndash;&gt;-->
+<!--      &lt;!&ndash; Add this modal structure somewhere in your HTML &ndash;&gt;-->
+<!--      &lt;!&ndash; Example Modal Structure &ndash;&gt;-->
+<!--      &lt;!&ndash; Ensure you include Bootstrap modal structure &ndash;&gt;-->
+<!--      &lt;!&ndash; You can customize it further as per your design preference &ndash;&gt;-->
+<!--      &lt;!&ndash; Modal for Editing User &ndash;&gt;-->
+<!--      <div id='editModal' class='modal fade' tabindex='-1' role='dialog'>-->
+<!--        ...-->
+<!--        &lt;!&ndash; Modal Content Here &ndash;&gt;-->
+<!--        ...-->
+<!--      </div>-->
+
+<!--    </div>-->
+
+<!--  </div>-->
+
+<!--</body>-->
+
+<!--<script th:src="@{/scripts.js}"></script>-->
+
+<!--<script src="//code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
+
+<!--<script src="//cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>-->
+
+<!--<script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+
+<!--</html>-->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/styles.css}">
+  <script th:src="@{/scripts.js}"></script>
+</head>
+<body>
+<div class="container-fluid mt-5">
+  <div class="row">
+
+    <!-- Left Column: Create User Form -->
+    <div class="col-md-3">
+      <div class="card mb-3">
+        <div class="card-header">Create New User</div>
+        <div class="card-body">
+          <form id="create-user-form">
+            <div class="form-group">
+              <label for="clientname">Client Name</label>
+              <input type="text" class="form-control" id="clientname" required>
+            </div>
+            <div class="form-group">
+              <label for="clientnumber">Client Number</label>
+              <input type="text" class="form-control" id="clientnumber" pattern="^[6-9]\d{9}$" title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9" required>
+            </div>
+            <div class="form-group">
+              <label for="passportexpirymonth">Passport Expiry Month</label>
+              <input type="number" class="form-control" id="passportexpirymonth" min="1" max="12" required>
+            </div>
+            <div class="form-group">
+              <label for="passportexpiryyear">Passport Expiry Year</label>
+              <input type="number" class="form-control" id="passportexpiryyear" min="1990" required>
+            </div>
+            <div class="form-group">
+              <label for="passportissuemonth">Passport Issue Month</label>
+              <input type="number" class="form-control" id="passportissuemonth" min="1" max="12" required>
+            </div>
+            <div class="form-group">
+              <label for="passportissueyear">Passport Issue Year</label>
+              <input type="number" class="form-control" id="passportissueyear" min="1990" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add User</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Users Table and Search Forms Above it -->
+    <div class="col-md-9">
+      <div class="row mb-3">
+        <!-- Search by Name -->
+        <div class="col-md-6">
+          <div class="card search-card">
+            <div class="card-body">
+              <h5 class="card-title">Search by Name</h5>
+              <form id="findByNameForm" class="form-inline">
+                <div class="form-group">
+                  <input type="text" id="personName" class="form-control mr-2" placeholder="Name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+              </form>
+              <div id="personByNameDetails" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search by Expiry -->
+        <div class="col-md-6">
+          <div class="card search-card">
+            <div class="card-body">
+              <h5 class="card-title">Search by Expiry</h5>
+              <form id="findByExpiryForm" class="form-inline">
+                <div class="form-group">
+                  <input type="number" id="expiryMonth" class="form-control expiry-field mr-2" placeholder="Month" min="1" max="12" required>
+                </div>
+                <div class="form-group">
+                  <input type='number' id='expiryYear' class='form-control expiry-field mr-2' placeholder='Year' min='2024' required />
+                </div>
+                <button type='submit' class='btn btn-primary'>Search</button>
+              </form>
+              <div id='personByExpiryDetails' class='mt-3'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class='card'>
+        <div class='card-body'>
+          <table class='table table-striped' id='users-table'>
+            <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Expiry Month</th>
+              <th>Expiry Year</th>
+              <th>Issue Month</th>
+              <th>Issue Year</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <!-- Pagination Buttons -->
+          <div id='pagination' class='mt-3'>
+            <button type='button' class='btn btn-outline-primary' id='prev-page'>Previous</button>
+            <button type='button' class='btn btn-outline-primary' id='next-page'>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit User Modal -->
+      <div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit User</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="edit-user-form">
+                <div class="form-group">
+                  <label for="edit-clientname">Client Name</label>
+                  <input type="text" class="form-control" id="edit-clientname" required>
+                </div>
+                <div class="form-group">
+                  <label for="edit-clientnumber">Client Number</label>
+                  <input type="text" class="form-control" id="edit-clientnumber" pattern="^[6-9]\d{9}$" title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9" required>
+                </div>
+                <div class="form-group">
+                  <label for="edit-passportexpirymonth">Passport Expiry Month</label>
+                  <input type="number" class="form-control" id="edit-passportexpirymonth" min="1" max="12" required>
+                </div>
+                <div class="form-group">
+                  <label for="edit-passportexpiryyear">Passport Expiry Year</label>
+                  <input type="number" class="form-control" id="edit-passportexpiryyear" min="1990" required>
+                </div>
+                <div class="form-group">
+                  <label for="edit-passportissuemonth">Passport Issue Month</label>
+                  <input type="number" class="form-control" id="edit-passportissuemonth" min="1" max="12" required>
+                </div>
+                <div class="form-group">
+                  <label for="edit-passportissueyear">Passport Issue Year</label>
+                  <input type="number" class="form-control" id="edit-passportissueyear" min="1990" required>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="save-changes">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+<script th:src="@{/scripts.js}"></script>
+
+<script src="//code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Script to trigger the modal
+  $(document).on('click', '.edit-btn', function () {
+    var userId = $(this).data('id');
+    // Fetch user data and populate the form fields
+    $.ajax({
+      url: '/api/users/' + userId,
+      method: 'GET',
+      success: function (data) {
+        $('#edit-clientname').val(data.clientName);
+        $('#edit-clientnumber').val(data.clientNumber);
+        $('#edit-passportexpirymonth').val(data.passportExpiryMonth);
+        $('#edit-passportexpiryyear').val(data.passportExpiryYear);
+        $('#edit-passportissuemonth').val(data.passportIssueMonth);
+        $('#edit-passportissueyear').val(data.passportIssueYear);
+        $('#editModal').modal('show');
+      }
+    });
+  });
+
+  // Save changes
+  $('#save-changes').click(function () {
+    var updatedUser = {
+      clientName: $('#edit-clientname').val(),
+      clientNumber: $('#edit-clientnumber').val(),
+      passportExpiryMonth: $('#edit-passportexpirymonth').val(),
+      passportExpiryYear: $('#edit-passportexpiryyear').val(),
+      passportIssueMonth: $('#edit-passportissuemonth').val(),
+      passportIssueYear: $('#edit-passportissueyear').val()
+    };
+    $.ajax({
+      url: '/api/users/' + userId,
+      method: 'PUT',
+      data: JSON.stringify(updatedUser),
+      contentType: 'application/json',
+      success: function () {
+        $('#editModal').modal('hide');
+        alert('User updated successfully!');
+        // Optionally, refresh the table or perform other actions
+      }
+    });
+  });
+</script>
+
+</html>
