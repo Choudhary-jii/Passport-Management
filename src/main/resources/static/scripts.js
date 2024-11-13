@@ -722,7 +722,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Updated user data:", updatedUser);
 
         try {
-            const response = await fetch('http://localhost:8080/myapp/api/update', {
+            const response = await fetch('passport-management-production.up.railway.app/myapp/api/update', {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedUser)
